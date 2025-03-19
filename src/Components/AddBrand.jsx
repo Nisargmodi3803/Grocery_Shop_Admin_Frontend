@@ -1,4 +1,4 @@
-import './UpdateBrand.css';
+import './AddBrand.css'
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -15,15 +15,13 @@ const importAll = (r) => {
 
 const imageMap = importAll(require.context("../assets/Brand", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
 
-export const UpdateBrand = () => {
-    const { brandId } = useParams();
+export const AddBrand = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
-    const [oldSlugTitle, setOldSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
 
     const handleImageChange = (e) => {
@@ -42,8 +40,8 @@ export const UpdateBrand = () => {
         }
 
         try {
-            const response = await axios.patch(
-                `http://localhost:9000/update-brand/${brandId}`,
+            const response = await axios.post(
+                `http://localhost:9000/add-brand`,
                 formData,
                 {
                     headers: {
@@ -54,8 +52,8 @@ export const UpdateBrand = () => {
             if (response.status === 200) {
                 await Swal.fire({
                     icon: 'success',
-                    title: 'Updated!',
-                    text: 'Brand data has been updated successfully.',
+                    title: 'Added!',
+                    text: 'Brand has been added successfully.',
                     timer: 2000,
                     showConfirmButton: false
                 });
@@ -67,30 +65,6 @@ export const UpdateBrand = () => {
         }
     };
 
-    const fetchBrand = async () => {
-        try {
-            const response = await axios.get(`http://localhost:9000/brand-id/${brandId}`);
-            if (response.status === 200) {
-                const brandData = response.data;
-                setName(brandData.name || '');
-                setDescription(brandData.description || '');
-                setSlugTitle(brandData.slug_title || '');
-                setOldSlugTitle(brandData.slug_title || '');
-                const imageSrc = imageMap[brandData.image_url] || `http://localhost:9000/uploads/${brandData.image_url}`;
-                setExistingImage(imageSrc);
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Something went wrong while fetching brand details.");
-        }
-    };
-
-    useEffect(() => {
-        if (brandId) {
-            fetchBrand();
-        }
-    }, [brandId]);
-
     const handleNameChange = async (e) => {
         setName(e.target.value);
         const slugTitle = e.target.value
@@ -100,47 +74,47 @@ export const UpdateBrand = () => {
 
         setSlugTitle(slugTitle);
 
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${slugTitle}`)
+        try {
+            const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${slugTitle}`)
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
+            if (response.status == 200) {
+                if (response.data == true) {
+                    setIsSlugTitleExist(response.data);
+                } else {
+                    setIsSlugTitleExist(response.data);
                 }
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+            console.log(error);
         }
+
     };
 
     const handleSlugTitleChange = async (e) => {
         setSlugTitle(e.target.value);
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${e.target.value}`)
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
+        try {
+            const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${e.target.value}`)
+
+            if (response.status == 200) {
+                if (response.data == true) {
+                    setIsSlugTitleExist(response.data);
+                } else {
+                    setIsSlugTitleExist(response.data);
                 }
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+            console.log(error);
         }
+
     }
+
 
     return (
         <div className='update-brand'>
             <Sidebar activeId={2} />
             <div className="update-brand-container">
-                <h2>+ Update Brand</h2>
+                <h2>+ Add Brand</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">
@@ -149,8 +123,8 @@ export const UpdateBrand = () => {
                                 type="text"
                                 value={name}
                                 onChange={(e) => handleNameChange(e)}
-                                required
                                 placeholder='Brand Title'
+                                required
                             />
                         </div>
                         <div className="form-group">
@@ -159,7 +133,6 @@ export const UpdateBrand = () => {
                                 type="text"
                                 value={slugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
-                                required
                                 placeholder='Brand Slug Title'
                             />
                         </div>
@@ -174,8 +147,12 @@ export const UpdateBrand = () => {
                             />
                         </div>
                         <div className="form-group">
-                            <label>Image</label>
-                            <input type="file" accept="image/*" onChange={handleImageChange} />
+                            <label>Image <span className="required">*</span></label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                required />
                             <small>Select Size: (250px X 150px)</small>
                             {imageFile ? (
                                 <img src={URL.createObjectURL(imageFile)} alt="preview" className="image-preview" />
@@ -184,12 +161,12 @@ export const UpdateBrand = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Update</button>
+                            <button type="submit" className="update-btn">Add</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}

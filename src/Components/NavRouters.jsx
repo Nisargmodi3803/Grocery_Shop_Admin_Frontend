@@ -18,6 +18,11 @@ import { ProductInquiry } from './ProductInquiry';
 import { DeliveryRoute } from './DeliveryRoute';
 import { TimeSlot } from './TimeSlot';
 import { UpdateBrand } from './UpdateBrand';
+import { AddBrand } from './AddBrand';
+import { UpdateCategory } from './UpdateCategory';
+import { AddCategory } from './AddCategory';
+import { UpdateSubcategory } from './UpdateSubcategory';
+import { AddSubcategory } from './AddSubcategory';
 
 export const NavRouters = () => {
     return (
@@ -40,7 +45,13 @@ export const NavRouters = () => {
                 <Route path='/admin/product-inquiry' element={<ProductInquiry/>}/>
                 <Route path='/admin/delivery-route' element={<DeliveryRoute/>}/>
                 <Route path='/admin/time-slot' element={<TimeSlot/>}/>
-                <Route path='/admin/brands/update-brand/:brandId' element={<UpdateBrand/>}/>
+                <Route path='/admin/brands/add-brand' element={<AddBrand/>} />
+                <Route path='/admin/category/update-brand/:brandId' element={<UpdateBrand/>}/>
+                <Route path='/admin/Category/update-category/:categoryId' element={<UpdateCategory/>}/>
+                <Route path='/admin/category/add-category' element={<AddCategory/>} />
+                <Route path='/admin/subcategory/update-subcategory/:subcategoryId' element={<UpdateSubcategory/>}/>
+                <Route path='/admin/subcategory/add-subcategory' element={<AddSubcategory/>}/>
+                
             </Routes>
         </>
     )

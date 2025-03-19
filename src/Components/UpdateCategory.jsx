@@ -1,4 +1,3 @@
-import './UpdateBrand.css';
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -13,13 +12,14 @@ const importAll = (r) => {
     return images;
 };
 
-const imageMap = importAll(require.context("../assets/Brand", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
+const imageMap = importAll(require.context("../assets/Category", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
 
-export const UpdateBrand = () => {
-    const { brandId } = useParams();
+export const UpdateCategory = () => {
+    const { categoryId } = useParams();
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [priority, setPriority] = useState();
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
@@ -37,13 +37,14 @@ export const UpdateBrand = () => {
         formData.append('name', name);
         formData.append('description', description);
         formData.append('slugTitle', slugTitle);
+        formData.append('priority', priority);
         if (imageFile) {
             formData.append('imageFile', imageFile);
         }
 
         try {
             const response = await axios.patch(
-                `http://localhost:9000/update-brand/${brandId}`,
+                `http://localhost:9000/update-category/${categoryId}`,
                 formData,
                 {
                     headers: {
@@ -55,41 +56,42 @@ export const UpdateBrand = () => {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Updated!',
-                    text: 'Brand data has been updated successfully.',
+                    text: 'category data has been updated successfully.',
                     timer: 2000,
                     showConfirmButton: false
                 });
-                navigate('/admin/brands');
+                navigate('/admin/category');
             }
         } catch (error) {
             console.error(error);
-            alert('Something went wrong while updating the brand.');
+            alert('Something went wrong while updating the category.');
         }
     };
 
-    const fetchBrand = async () => {
+    const fetchCategory = async () => {
         try {
-            const response = await axios.get(`http://localhost:9000/brand-id/${brandId}`);
+            const response = await axios.get(`http://localhost:9000/category-id/${categoryId}`);
             if (response.status === 200) {
-                const brandData = response.data;
-                setName(brandData.name || '');
-                setDescription(brandData.description || '');
-                setSlugTitle(brandData.slug_title || '');
-                setOldSlugTitle(brandData.slug_title || '');
-                const imageSrc = imageMap[brandData.image_url] || `http://localhost:9000/uploads/${brandData.image_url}`;
+                const categoryData = response.data;
+                setName(categoryData.name || '');
+                setDescription(categoryData.description || '');
+                setSlugTitle(categoryData.slug_title || '');
+                setOldSlugTitle(categoryData.slug_title || '');
+                setPriority(categoryData.priority);
+                const imageSrc = imageMap[categoryData.image_url] || `http://localhost:9000/uploads/${categoryData.image_url}`;
                 setExistingImage(imageSrc);
             }
         } catch (error) {
             console.error(error);
-            alert("Something went wrong while fetching brand details.");
+            alert("Something went wrong while fetching category details.");
         }
     };
 
     useEffect(() => {
-        if (brandId) {
-            fetchBrand();
+        if (categoryId) {
+            fetchCategory();
         }
-    }, [brandId]);
+    }, [categoryId]);
 
     const handleNameChange = async (e) => {
         setName(e.target.value);
@@ -102,7 +104,7 @@ export const UpdateBrand = () => {
 
         if (slugTitle !== oldSlugTitle) {
             try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${slugTitle}`)
+                const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slugTitle}`)
 
                 if (response.status == 200) {
                     if (response.data == true) {
@@ -121,7 +123,7 @@ export const UpdateBrand = () => {
         setSlugTitle(e.target.value);
         if (slugTitle !== oldSlugTitle) {
             try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${e.target.value}`)
+                const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${e.target.value}`)
 
                 if (response.status == 200) {
                     if (response.data == true) {
@@ -138,9 +140,9 @@ export const UpdateBrand = () => {
 
     return (
         <div className='update-brand'>
-            <Sidebar activeId={2} />
+            <Sidebar activeId={3} />
             <div className="update-brand-container">
-                <h2>+ Update Brand</h2>
+                <h2>+ Update Category</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">
@@ -150,7 +152,7 @@ export const UpdateBrand = () => {
                                 value={name}
                                 onChange={(e) => handleNameChange(e)}
                                 required
-                                placeholder='Brand Title'
+                                placeholder="Category Name"
                             />
                         </div>
                         <div className="form-group">
@@ -160,7 +162,7 @@ export const UpdateBrand = () => {
                                 value={slugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
-                                placeholder='Brand Slug Title'
+                                placeholder="Category Slug Title"
                             />
                         </div>
                         {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
@@ -170,7 +172,17 @@ export const UpdateBrand = () => {
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder='Brand Description'
+                                placeholder="Category Description"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Priority <span className="required">*</span></label>
+                            <input
+                                type="number"
+                                value={priority}
+                                onChange={(e) => setPriority(e.target.value)}
+                                required
+                                placeholder="Category Priority"
                             />
                         </div>
                         <div className="form-group">
@@ -191,5 +203,5 @@ export const UpdateBrand = () => {
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}

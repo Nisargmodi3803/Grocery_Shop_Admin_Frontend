@@ -1,4 +1,3 @@
-import './UpdateBrand.css';
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -13,17 +12,16 @@ const importAll = (r) => {
     return images;
 };
 
-const imageMap = importAll(require.context("../assets/Brand", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
+const imageMap = importAll(require.context("../assets/Category", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
 
-export const UpdateBrand = () => {
-    const { brandId } = useParams();
+export const AddCategory = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [imageFile, setImageFile] = useState(null);
+    const [priority, setPriority] = useState();
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
-    const [oldSlugTitle, setOldSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
 
     const handleImageChange = (e) => {
@@ -36,14 +34,15 @@ export const UpdateBrand = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
+        formData.append('priority', priority);
         formData.append('slugTitle', slugTitle);
         if (imageFile) {
             formData.append('imageFile', imageFile);
         }
 
         try {
-            const response = await axios.patch(
-                `http://localhost:9000/update-brand/${brandId}`,
+            const response = await axios.post(
+                `http://localhost:9000/add-category`,
                 formData,
                 {
                     headers: {
@@ -54,42 +53,18 @@ export const UpdateBrand = () => {
             if (response.status === 200) {
                 await Swal.fire({
                     icon: 'success',
-                    title: 'Updated!',
-                    text: 'Brand data has been updated successfully.',
+                    title: 'Added!',
+                    text: 'Category has been added successfully.',
                     timer: 2000,
                     showConfirmButton: false
                 });
-                navigate('/admin/brands');
+                navigate('/admin/category');
             }
         } catch (error) {
             console.error(error);
-            alert('Something went wrong while updating the brand.');
+            alert('Something went wrong while updating the category.');
         }
     };
-
-    const fetchBrand = async () => {
-        try {
-            const response = await axios.get(`http://localhost:9000/brand-id/${brandId}`);
-            if (response.status === 200) {
-                const brandData = response.data;
-                setName(brandData.name || '');
-                setDescription(brandData.description || '');
-                setSlugTitle(brandData.slug_title || '');
-                setOldSlugTitle(brandData.slug_title || '');
-                const imageSrc = imageMap[brandData.image_url] || `http://localhost:9000/uploads/${brandData.image_url}`;
-                setExistingImage(imageSrc);
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Something went wrong while fetching brand details.");
-        }
-    };
-
-    useEffect(() => {
-        if (brandId) {
-            fetchBrand();
-        }
-    }, [brandId]);
 
     const handleNameChange = async (e) => {
         setName(e.target.value);
@@ -100,47 +75,46 @@ export const UpdateBrand = () => {
 
         setSlugTitle(slugTitle);
 
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${slugTitle}`)
+        try {
+            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slugTitle}`)
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
+            if (response.status == 200) {
+                if (response.data == true) {
+                    setIsSlugTitleExist(response.data);
+                } else {
+                    setIsSlugTitleExist(response.data);
                 }
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+            console.log(error);
         }
+
     };
 
     const handleSlugTitleChange = async (e) => {
         setSlugTitle(e.target.value);
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-brand-slug-title?slugTitle=${e.target.value}`)
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
+        try {
+            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${e.target.value}`)
+
+            if (response.status == 200) {
+                if (response.data == true) {
+                    setIsSlugTitleExist(response.data);
+                } else {
+                    setIsSlugTitleExist(response.data);
                 }
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+            console.log(error);
         }
+
     }
 
     return (
         <div className='update-brand'>
-            <Sidebar activeId={2} />
+            <Sidebar activeId={3} />
             <div className="update-brand-container">
-                <h2>+ Update Brand</h2>
+                <h2>+ Add Category</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">
@@ -150,7 +124,7 @@ export const UpdateBrand = () => {
                                 value={name}
                                 onChange={(e) => handleNameChange(e)}
                                 required
-                                placeholder='Brand Title'
+                                placeholder='Category Title'
                             />
                         </div>
                         <div className="form-group">
@@ -160,7 +134,7 @@ export const UpdateBrand = () => {
                                 value={slugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
-                                placeholder='Brand Slug Title'
+                                placeholder='Category Slug Title'
                             />
                         </div>
                         {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
@@ -170,12 +144,26 @@ export const UpdateBrand = () => {
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder='Brand Description'
+                                placeholder='Category Description'
                             />
                         </div>
                         <div className="form-group">
-                            <label>Image</label>
-                            <input type="file" accept="image/*" onChange={handleImageChange} />
+                            <label>Priority <span className="required">*</span></label>
+                            <input
+                                type="number"
+                                value={priority}
+                                onChange={(e) => setPriority(e.target.value)}
+                                required
+                                placeholder='Category Priority'
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Image <span className="required">*</span></label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                required />
                             <small>Select Size: (250px X 150px)</small>
                             {imageFile ? (
                                 <img src={URL.createObjectURL(imageFile)} alt="preview" className="image-preview" />
@@ -184,12 +172,12 @@ export const UpdateBrand = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Update</button>
+                            <button type="submit" className="update-btn">Add</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}

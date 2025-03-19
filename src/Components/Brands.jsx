@@ -1,7 +1,7 @@
+import './Brands.css';
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import axios from 'axios';
-import './Brands.css';
 import { FaPencilAlt } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import jsPDF from 'jspdf';
@@ -73,9 +73,11 @@ export const Brands = () => {
         } catch (error) {
             if (error.response.status === 404) {
                 setShowResult(false);
+                setBrands([]);
             } else {
                 console.error("Error fetching search results:", error);
                 alert("Error fetching search results. Please try again later.");
+                setBrands([]);
             }
         }
     }
@@ -96,8 +98,61 @@ export const Brands = () => {
 
     // Print
     const handlePrint = () => {
-        window.print();
+        let printContent = `
+            <h2 style="text-align:center; margin-bottom:20px;">Brand List</h2>
+            <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        paginatedBrands.forEach((brand) => {
+            const imageSrc = imageMap[brand.image_url] || `http://localhost:9000/uploads/${brand.image_url}`;
+            printContent += `
+                <tr>
+                    <td>${brand.id}</td>
+                    <td><img src="${imageSrc}" alt="${brand.name}" width="60" height="60"/></td>
+                    <td>${brand.name}</td>
+                    <td>${brand.description}</td>
+                </tr>
+            `;
+        });
+
+        printContent += `
+                </tbody>
+            </table>
+        `;
+
+        const newWin = window.open('', '', 'width=900,height=700');
+        newWin.document.write(`
+            <html>
+                <head>
+                    <title>Brand List Print</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        table { width: 100%; border-collapse: collapse; }
+                        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+                        th { background-color: #f0f0f0; }
+                        img { width: 60px; height: auto; }
+                    </style>
+                </head>
+                <body>
+                    ${printContent}
+                </body>
+            </html>
+        `);
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
     };
+
 
     //Copy
     const handleCopy = () => {
@@ -122,12 +177,25 @@ export const Brands = () => {
     // PDF
     const handlePdfExport = () => {
         const doc = new jsPDF();
-        autoTable(doc, {
-            head: [['Id', 'Name', 'Description']],
-            body: brands.map(b => [b.id, b.name, b.description]),
+        const tableColumn = ["Id", "Name", "Description"];
+        const tableRows = [];
+
+        brands.forEach((brand) => {
+            tableRows.push([brand.id, brand.name, brand.description]);
         });
+
+        autoTable(doc, {
+            head: [tableColumn],
+            body: tableRows,
+            startY: 20,
+        });
+
+        doc.setFontSize(16);
+        doc.text("Brand List", 105, 15, { align: "center" });
         doc.save('brands.pdf');
     };
+
+
 
     // Excel
     const handleExcelExport = () => {
@@ -165,16 +233,16 @@ export const Brands = () => {
     const handleDelete = async (id) => {
         const result = await deleteBrandAlert();
 
-        if(result.isConfirmed) {
+        if (result.isConfirmed) {
             try {
                 const response = await axios.patch(`http://localhost:9000/delete-brand/${id}`);
-                if(response.status === 200) {
+                if (response.status === 200) {
                     fetchBrands();
                 }
-            }catch(error) {
-                if(error.response?.status === 400) {
+            } catch (error) {
+                if (error.response?.status === 400) {
                     console.error(error);
-                }else{
+                } else {
                     alert("Something went wrong in deleting the brand. Please try again!");
                     console.error(error);
                 }
@@ -188,7 +256,8 @@ export const Brands = () => {
             <div className="brand-content">
                 <div className="brand-header">
                     <h2>BRAND LIST</h2>
-                    <button className="add-brand-btn">
+                    <button className="add-brand-btn"
+                        onClick={() => navigate("/admin/brands/add-brand")}>
                         Add Brand <span>+</span>
                     </button>
                 </div>
@@ -212,7 +281,7 @@ export const Brands = () => {
                             <th>Id</th>
                             <th>Image</th>
                             <th>Name</th>
-                            <th>Description</th>
+                            <th className="description">Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -228,7 +297,7 @@ export const Brands = () => {
                                         <img src={imageSrc} alt={brand.name} className="brand-image" />
                                     </td>
                                     <td>{brand.name}</td>
-                                    <td>{brand.description}</td>
+                                    <td className="description">{brand.description}</td>
                                     <td className="action-buttons">
                                         <FaPencilAlt
                                             className="edit-icon"
