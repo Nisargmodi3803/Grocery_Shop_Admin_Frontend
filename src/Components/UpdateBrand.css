@@ -1,0 +1,122 @@
+.update-brand {
+    display: flex;
+}
+
+.update-brand-container {
+    margin-top: 100px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: auto;
+    padding: 20px;
+    padding-top: 0px;
+    background-color: #fff;
+    border: 1px solid #dcdcdc;
+    width: 70%;
+}
+
+.update-brand-container h2 {
+    background-color: #006d7e;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+}
+
+.form-section h3 {
+    margin-top: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    color: #133365;
+    font-size: 28px;
+    font-weight: 500;
+    display: flex;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #133365;
+    display: flex;
+}
+
+.form-group span {
+    color: red;
+    margin-left: 2px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group input[type="file"] {
+    width: 95%;
+    padding: 10px;
+    display: flex;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group input[type="file"]:focus {
+    border-color: #006d7e;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 109, 126, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 13px;
+}
+
+.image-preview {
+    margin-top: 12px;
+    width: 250px;
+    height: 150px;
+    object-fit:fill;
+    border: 1px solid #ddd;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.update-btn {
+    background-color: #006d7e;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.update-btn:hover {
+    background-color: #004f5a;
+}
+
+.cancel-btn {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #d0d0d0;
+}

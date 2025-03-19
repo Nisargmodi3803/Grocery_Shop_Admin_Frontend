@@ -1,0 +1,104 @@
+import React, { useState } from "react";
+import "./SideBar.css";
+import { FaList } from "react-icons/fa";
+import { FaTags } from "react-icons/fa6";
+import { BiSolidCategory } from "react-icons/bi";
+import { TfiLayoutAccordionList } from "react-icons/tfi";
+import { FaToolbox } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
+import { FaUserAlt } from "react-icons/fa";
+import { BiSolidCoupon } from "react-icons/bi";
+import { FaPenToSquare } from "react-icons/fa6";
+import { MdOutlinePriceChange } from "react-icons/md";
+import { FaGift } from "react-icons/fa6";
+import { FaMobileAlt } from "react-icons/fa";
+import { FaTruck } from "react-icons/fa";
+import { HiSpeakerphone } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+
+const Sidebar = ({ activeId }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="sidebar">
+      <ul className='side-nav-list'>
+        <li className={activeId === 1 && "active"}
+          onClick={() => navigate("/admin/orders")}>
+          <FaList /> Orders
+        </li>
+
+        <li className={activeId === 2 && "active"}
+          onClick={() => navigate("/admin/brands")}>
+          <FaTags /> Brand
+        </li>
+
+        <li className={activeId === 3 && "active"}
+          onClick={() => navigate("/admin/category")}>
+          <BiSolidCategory /> Category
+        </li>
+
+        <li className={activeId === 4 && "active"}
+          onClick={() => navigate("/admin/subcategory")}>
+          <TfiLayoutAccordionList /> Subcategory
+        </li>
+
+        <li className={activeId === 5 && "active"}
+          onClick={() => navigate("/admin/product")}>
+          <FaToolbox /> Product
+        </li>
+
+        <li className={activeId === 6 && "active"}
+          onClick={() => navigate("/admin/city")}>
+          <IoLocationSharp /> City
+        </li>
+
+        <li className={activeId === 7 && "active"}
+          onClick={() => navigate("/admin/customers")}>
+          <FaUserAlt /> Customers
+        </li>
+
+        <li className={activeId === 8 && "active"}
+          onClick={() => navigate("/admin/coupon")}>
+          <BiSolidCoupon /> Coupon Code
+        </li>
+
+        <li className={activeId === 9 && "active"}
+          onClick={() => navigate("/admin/blogs")}>
+          <FaPenToSquare /> Blogs
+        </li>
+
+        <li className={activeId === 10 && "active"}
+          onClick={() => navigate("/admin/bulk-price")}>
+          <MdOutlinePriceChange /> Bulk Price Change
+        </li>
+
+        <li className={activeId === 11 && "active"}
+          onClick={() => navigate("/admin/offer-banner")}>
+          <FaGift /> Offer Banner
+        </li>
+
+        <li className={activeId === 12 && "active"}
+          onClick={() => navigate("/admin/contact")}>
+          <FaMobileAlt /> Contact
+        </li>
+
+        <li className={activeId === 13 && "active"}
+          onClick={() => navigate("/admin/delivery-route")}>
+          <FaTruck /> Delivery Route
+        </li>
+
+        <li className={activeId === 14 && "active"}
+          onClick={() => navigate("/admin/time-slot")}>
+          <IoLocationSharp /> Delivery Time Slot
+        </li>
+
+        <li className={activeId === 15 && "active"}
+          onClick={() => navigate("/admin/product-inquiry")}>
+          <HiSpeakerphone /> Product Inquiry
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;

@@ -1,0 +1,55 @@
+/* Header container */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    background-color: #dbeafe; /* Light Blue */
+    border-bottom: 4px solid #1e3a8a; /* Dark Blue */
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-left .company-logo {
+    width: 180px;
+    /* height: 100px; */
+    height: auto;
+}
+
+/* Center section - Menu button */
+.header-menu .menu-btn {
+    font-size: 24px;
+    color: #1e3a8a;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* Hidden on small screens */
+}
+
+/* Right section - Power button */
+.header-right .power-btn {
+    font-size: 28px;
+    color: #1e3a8a;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Show menu button on larger screens */
+@media (min-width: 768px) {
+    .header-menu .menu-btn {
+        display: block;
+    }
+}

@@ -1,0 +1,25 @@
+.product-inquiry {
+    display: flex;
+}
+
+.product-inquiry h1 {
+    margin: auto;
+    font-size: 3rem;
+    color: #133365;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
