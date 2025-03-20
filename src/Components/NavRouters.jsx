@@ -23,6 +23,10 @@ import { UpdateCategory } from './UpdateCategory';
 import { AddCategory } from './AddCategory';
 import { UpdateSubcategory } from './UpdateSubcategory';
 import { AddSubcategory } from './AddSubcategory';
+import { UpdateCity } from './UpdateCity';
+import { AddCity } from './AddCity';
+import { AddBlog } from './AddBlog';
+import { UpdateBlog } from './UpdateBlog';
 
 export const NavRouters = () => {
     return (
@@ -51,7 +55,10 @@ export const NavRouters = () => {
                 <Route path='/admin/category/add-category' element={<AddCategory/>} />
                 <Route path='/admin/subcategory/update-subcategory/:subcategoryId' element={<UpdateSubcategory/>}/>
                 <Route path='/admin/subcategory/add-subcategory' element={<AddSubcategory/>}/>
-                
+                <Route path='/admin/city/update-city/:cityId' element={<UpdateCity/>}/>
+                <Route path='/admin/city/add-city' element={<AddCity/>}/>
+                <Route path='/admin/blogs/add-blog' element={<AddBlog/>}/>
+                <Route path='/admin/blogs/update-blog/:blogId' element={<UpdateBlog />}/>
             </Routes>
         </>
     )

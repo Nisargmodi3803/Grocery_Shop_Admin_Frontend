@@ -58,7 +58,7 @@ export const UpdateSubcategory = () => {
 
         try {
             const response = await axios.patch(
-                `http://localhost:9000/update-subcategory/${categoryId}`,
+                `http://localhost:9000/update-subcategory/${subcategoryId}`,
                 formData,
                 {
                     headers: {

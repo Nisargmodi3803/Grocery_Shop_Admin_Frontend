@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { parseISO, format, isValid } from 'date-fns';
 
 const importAll = (r) => {
     let images = {};
@@ -12,17 +13,20 @@ const importAll = (r) => {
     return images;
 };
 
-const imageMap = importAll(require.context("../assets/Category", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
+const imageMap = importAll(require.context("../assets/Blog", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
 
-export const AddCategory = () => {
+
+export const UpdateBlog = () => {
+    const { blogId } = useParams();
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [date, setDate] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
+    const [oldSlugTitle, setOldSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
-    const [priority, setPriority] = useState();
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -34,15 +38,15 @@ export const AddCategory = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
-        formData.append('priority', priority);
         formData.append('slugTitle', slugTitle);
+        formData.append('date', date);
         if (imageFile) {
             formData.append('imageFile', imageFile);
         }
 
         try {
-            const response = await axios.post(
-                `http://localhost:9000/add-category`,
+            const response = await axios.patch(
+                `http://localhost:9000/update-blog/${blogId}`,
                 formData,
                 {
                     headers: {
@@ -53,18 +57,43 @@ export const AddCategory = () => {
             if (response.status === 200) {
                 await Swal.fire({
                     icon: 'success',
-                    title: 'Added!',
-                    text: 'Category has been added successfully.',
+                    title: 'Updated!',
+                    text: 'Blog data has been updated successfully.',
                     timer: 2000,
                     showConfirmButton: false
                 });
-                navigate('/admin/category');
+                navigate('/admin/blogs');
             }
         } catch (error) {
             console.error(error);
-            alert('Something went wrong while updating the category.');
+            alert('Something went wrong while updating the blog.');
         }
     };
+
+    const fetchBlog = async () => {
+        try {
+            const response = await axios.get(`http://localhost:9000/blog-id/${blogId}`);
+            if (response.status === 200) {
+                const blogData = response.data;
+                setName(blogData.title || '');
+                setDescription(blogData.description || '');
+                setSlugTitle(blogData.slug_title || '');
+                setDate(blogData.date || '');
+                setOldSlugTitle(blogData.slug_title || '');
+                const imageSrc = imageMap[blogData.image_url] || `http://localhost:9000/uploads/${blogData.image_url}`;
+                setExistingImage(imageSrc);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong while fetching blog details.");
+        }
+    };
+
+    useEffect(() => {
+        if (blogId) {
+            fetchBlog();
+        }
+    }, [blogId]);
 
     const handleNameChange = async (e) => {
         setName(e.target.value);
@@ -75,46 +104,57 @@ export const AddCategory = () => {
 
         setSlugTitle(slugTitle);
 
-        try {
-            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slugTitle}`)
+        if (slugTitle !== oldSlugTitle) {
+            try {
+                const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${slugTitle}`)
 
-            if (response.status == 200) {
-                if (response.data == true) {
-                    setIsSlugTitleExist(response.data);
-                } else {
-                    setIsSlugTitleExist(response.data);
+                if (response.status == 200) {
+                    if (response.data == true) {
+                        setIsSlugTitleExist(response.data);
+                    } else {
+                        setIsSlugTitleExist(response.data);
+                    }
                 }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
         }
-
     };
 
     const handleSlugTitleChange = async (e) => {
         setSlugTitle(e.target.value);
+        if (slugTitle !== oldSlugTitle) {
+            try {
+                const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${e.target.value}`)
 
-        try {
-            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${e.target.value}`)
-
-            if (response.status == 200) {
-                if (response.data == true) {
-                    setIsSlugTitleExist(response.data);
-                } else {
-                    setIsSlugTitleExist(response.data);
+                if (response.status == 200) {
+                    if (response.data == true) {
+                        setIsSlugTitleExist(response.data);
+                    } else {
+                        setIsSlugTitleExist(response.data);
+                    }
                 }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
         }
-
     }
+
+    function formatDate(dateStr) {
+            if (!dateStr) return "Not Specified Yet";
+            try {
+                const date = parseISO(dateStr); // parseISO works with YYYY-MM-DD
+                return isValid(date) ? format(date, "dd-MM-yyyy") : "Invalid Date";
+            } catch (error) {
+                return "Invalid Date";
+            }
+        }
 
     return (
         <div className='update-brand'>
-            <Sidebar activeId={3} />
+            <Sidebar activeId={9} />
             <div className="update-brand-container">
-                <h2>+ Add Category</h2>
+                <h2>+ Update Blog</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">
@@ -124,7 +164,7 @@ export const AddCategory = () => {
                                 value={name}
                                 onChange={(e) => handleNameChange(e)}
                                 required
-                                placeholder='Category Title'
+                                placeholder='Blog Title'
                             />
                         </div>
                         <div className="form-group">
@@ -134,7 +174,17 @@ export const AddCategory = () => {
                                 value={slugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
-                                placeholder='Category Slug Title'
+                                placeholder='Blog Slug Title'
+                            />
+                        </div>
+                        <div className='form-group'>
+                            <label>Date <span className="required">*</span></label>
+                            <input
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                placeholder='Blog Date (DD-MM-YYYY)'
+                                required
                             />
                         </div>
                         {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
@@ -144,26 +194,12 @@ export const AddCategory = () => {
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder='Category Description'
+                                placeholder='Brand Description'
                             />
                         </div>
                         <div className="form-group">
-                            <label>Priority <span className="required">*</span></label>
-                            <input
-                                type="number"
-                                value={priority}
-                                onChange={(e) => setPriority(e.target.value)}
-                                required
-                                placeholder='Category Priority'
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Image <span className="required">*</span></label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                required />
+                            <label>Image</label>
+                            <input type="file" accept="image/*" onChange={handleImageChange} />
                             <small>Select Size: (250px X 150px)</small>
                             {imageFile ? (
                                 <img src={URL.createObjectURL(imageFile)} alt="preview" className="image-preview" />
@@ -172,7 +208,7 @@ export const AddCategory = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Add</button>
+                            <button type="submit" className="update-btn">Update</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>

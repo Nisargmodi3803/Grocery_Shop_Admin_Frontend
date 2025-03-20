@@ -208,6 +208,10 @@
     text-overflow: ellipsis;
 }
 
+.brand-table td.description{
+    text-align: left;
+}
+
 .brand-table td:nth-child(4) {
     white-space: normal !important;
     word-break: break-word;

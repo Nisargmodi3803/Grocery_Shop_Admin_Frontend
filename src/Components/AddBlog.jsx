@@ -1,8 +1,10 @@
+import './AddBrand.css'
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { parseISO, format, isValid } from 'date-fns';
 
 const importAll = (r) => {
     let images = {};
@@ -12,17 +14,17 @@ const importAll = (r) => {
     return images;
 };
 
-const imageMap = importAll(require.context("../assets/Category", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
+const imageMap = importAll(require.context("../assets/Blog", false, /\.(png|jpeg|svg|jpg|JPEG)$/));
 
-export const AddCategory = () => {
+export const AddBlog = () => {
     const navigate = useNavigate();
-    const [name, setName] = useState('');
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [date, setDate] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
-    const [priority, setPriority] = useState();
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -32,17 +34,17 @@ export const AddCategory = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', name);
+        formData.append('title', title);
         formData.append('description', description);
-        formData.append('priority', priority);
         formData.append('slugTitle', slugTitle);
+        formData.append('date', date);
         if (imageFile) {
             formData.append('imageFile', imageFile);
         }
 
         try {
             const response = await axios.post(
-                `http://localhost:9000/add-category`,
+                `http://localhost:9000/add-blog`,
                 formData,
                 {
                     headers: {
@@ -54,20 +56,20 @@ export const AddCategory = () => {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Added!',
-                    text: 'Category has been added successfully.',
+                    text: 'Blog has been added successfully.',
                     timer: 2000,
                     showConfirmButton: false
                 });
-                navigate('/admin/category');
+                navigate('/admin/blogs');
             }
         } catch (error) {
             console.error(error);
-            alert('Something went wrong while updating the category.');
+            alert('Something went wrong while updating the blog.');
         }
     };
 
     const handleNameChange = async (e) => {
-        setName(e.target.value);
+        setTitle(e.target.value);
         const slugTitle = e.target.value
             .toLowerCase()
             .replace(/[\s\(\)\[\]\{\}]+/g, '-')  // Replace all whitespaces & brackets with '-'
@@ -76,7 +78,7 @@ export const AddCategory = () => {
         setSlugTitle(slugTitle);
 
         try {
-            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slugTitle}`)
+            const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${slugTitle}`)
 
             if (response.status == 200) {
                 if (response.data == true) {
@@ -95,7 +97,7 @@ export const AddCategory = () => {
         setSlugTitle(e.target.value);
 
         try {
-            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${e.target.value}`)
+            const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${e.target.value}`)
 
             if (response.status == 200) {
                 if (response.data == true) {
@@ -110,21 +112,31 @@ export const AddCategory = () => {
 
     }
 
+    function formatDate(dateStr) {
+        if (!dateStr) return "Not Specified Yet";
+        try {
+            const date = parseISO(dateStr); // parseISO works with YYYY-MM-DD
+            return isValid(date) ? format(date, "dd-MM-yyyy") : "Invalid Date";
+        } catch (error) {
+            return "Invalid Date";
+        }
+    }
+
     return (
         <div className='update-brand'>
-            <Sidebar activeId={3} />
+            <Sidebar activeId={9} />
             <div className="update-brand-container">
-                <h2>+ Add Category</h2>
+                <h2>+ Add Blog</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">
                             <label>Name <span className="required">*</span></label>
                             <input
                                 type="text"
-                                value={name}
+                                value={title}
                                 onChange={(e) => handleNameChange(e)}
+                                placeholder='Blog Title'
                                 required
-                                placeholder='Category Title'
                             />
                         </div>
                         <div className="form-group">
@@ -133,28 +145,28 @@ export const AddCategory = () => {
                                 type="text"
                                 value={slugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
-                                required
-                                placeholder='Category Slug Title'
+                                placeholder='Blog Slug Title'
                             />
                         </div>
                         {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
                         <div className="form-group">
-                            <label>Description</label>
+                            <label>Description <span className="required">*</span></label>
                             <input
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder='Category Description'
+                                placeholder='Blog Description'
+                                required
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Priority <span className="required">*</span></label>
+                        <div className='form-group'>
+                        <label>Date <span className="required">*</span></label>
                             <input
-                                type="number"
-                                value={priority}
-                                onChange={(e) => setPriority(e.target.value)}
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                placeholder='Blog Date (DD-MM-YYYY)' 
                                 required
-                                placeholder='Category Priority'
                             />
                         </div>
                         <div className="form-group">

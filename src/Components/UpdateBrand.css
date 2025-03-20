@@ -50,7 +50,8 @@
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group textarea,
-.form-group input[type="file"] {
+.form-group input[type="file"],
+.form-group input[type="date"] {
     width: 95%;
     padding: 10px;
     display: flex;
