@@ -27,6 +27,9 @@ import { UpdateCity } from './UpdateCity';
 import { AddCity } from './AddCity';
 import { AddBlog } from './AddBlog';
 import { UpdateBlog } from './UpdateBlog';
+import { UpdateTimeSlot } from './UpdateTimeSlot';
+import { AddTimeSlot } from './AddTimeSlot';
+import { ProductReview } from './ProductReview';
 
 export const NavRouters = () => {
     return (
@@ -49,6 +52,7 @@ export const NavRouters = () => {
                 <Route path='/admin/product-inquiry' element={<ProductInquiry/>}/>
                 <Route path='/admin/delivery-route' element={<DeliveryRoute/>}/>
                 <Route path='/admin/time-slot' element={<TimeSlot/>}/>
+                <Route path='/admin/product-review' element={<ProductReview/>}/>
                 <Route path='/admin/brands/add-brand' element={<AddBrand/>} />
                 <Route path='/admin/category/update-brand/:brandId' element={<UpdateBrand/>}/>
                 <Route path='/admin/Category/update-category/:categoryId' element={<UpdateCategory/>}/>
@@ -59,6 +63,8 @@ export const NavRouters = () => {
                 <Route path='/admin/city/add-city' element={<AddCity/>}/>
                 <Route path='/admin/blogs/add-blog' element={<AddBlog/>}/>
                 <Route path='/admin/blogs/update-blog/:blogId' element={<UpdateBlog />}/>
+                <Route path='/admin/time-slot/update-slot/:slotId' element={<UpdateTimeSlot/>}/>
+                <Route path='/admin/time-slot/add-slot' element={<AddTimeSlot/>}/>
             </Routes>
         </>
     )

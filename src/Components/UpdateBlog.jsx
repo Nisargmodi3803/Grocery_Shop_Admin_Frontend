@@ -36,7 +36,7 @@ export const UpdateBlog = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', name);
+        formData.append('title', name);
         formData.append('description', description);
         formData.append('slugTitle', slugTitle);
         formData.append('date', date);

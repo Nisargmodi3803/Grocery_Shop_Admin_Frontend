@@ -264,6 +264,13 @@ export const Customers = () => {
       const response = await axios.patch(`http://localhost:9000/block-customer/${email}`);
       if (response.status === 200) {
         fetchCustomers();
+        Swal.fire({
+          icon: 'success',
+          title: 'Blocked!',
+          text: `Customer with email ${email} has been blocked.`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
     } catch (error) {
       if (error.response?.status === 404) {
@@ -273,13 +280,21 @@ export const Customers = () => {
         console.error(error);
       }
     }
-  }
+  };
+
 
   const handleUnblockCustomer = async (email) => {
     try {
       const response = await axios.patch(`http://localhost:9000/unblock-customer/${email}`);
       if (response.status === 200) {
         fetchCustomers();
+        Swal.fire({
+          icon: 'success',
+          title: 'Unblocked!',
+          text: `Customer with email ${email} has been unblocked.`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
     } catch (error) {
       if (error.response?.status === 404) {
@@ -289,7 +304,7 @@ export const Customers = () => {
         console.error(error);
       }
     }
-  }
+  };
 
   return (
     <div className='customers'>
@@ -341,19 +356,19 @@ export const Customers = () => {
                   <td>{customer.customerGender === 1 ? "Male" : customer.customerGender === 2 ? "Female" : "Other"}</td>
                   <td>{customer.customerReferralCode}</td>
                   <td className="action-buttons">
-                    {customer.isBlocked===1?(
+                    {customer.isBlocked === 1 ? (
                       <MdBlock
-                      className="delete-icon"
-                      title="Block"
-                      style={{ color: "maroon"}}
-                      onClick={() => handleBlockCustomer(customer.customerEmail)}
-                    />
-                    ):(
+                        className="delete-icon"
+                        title="Block"
+                        style={{ color: "maroon" }}
+                        onClick={() => handleBlockCustomer(customer.customerEmail)}
+                      />
+                    ) : (
                       <BsUnlock
-                      className="edit-icon"
-                      title="Unblock"
-                      onClick={() => handleUnblockCustomer(customer.customerEmail)}
-                    />
+                        className="edit-icon"
+                        title="Unblock"
+                        onClick={() => handleUnblockCustomer(customer.customerEmail)}
+                      />
                     )}
 
                     <RiDeleteBin5Line
