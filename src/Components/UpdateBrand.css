@@ -51,7 +51,8 @@
 .form-group input[type="number"],
 .form-group textarea,
 .form-group input[type="file"],
-.form-group input[type="date"] {
+.form-group input[type="date"],
+.form-group input[type='password'] {
     width: 95%;
     padding: 10px;
     display: flex;
@@ -220,4 +221,11 @@
     color: #777;
     cursor: default;
     text-align: left;
+}
+
+.update-btn:disabled {
+    cursor: not-allowed;
+    border: 1px solid #aaa;
+    opacity: 0.7;
+    transition: background-color 0.3s, color 0.3s, opacity 0.3s;
 }

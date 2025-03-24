@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route, BrowserRouter, Navigate  } from 'react-router-dom';
 import { Welcome } from './Welcome';
 import Sidebar from './Sidebar';
@@ -30,12 +30,18 @@ import { UpdateBlog } from './UpdateBlog';
 import { UpdateTimeSlot } from './UpdateTimeSlot';
 import { AddTimeSlot } from './AddTimeSlot';
 import { ProductReview } from './ProductReview';
+import { NewAdmin } from './NewAdmin';
+import { UpdatePasswordAdmin } from './UpdatePasswordAdmin';
+import { Login } from './Login';
 
 export const NavRouters = () => {
+
     return (
         <>
             <Routes>
-                <Route path="/" element={<Navigate to="/admin" replace />} />
+
+                <Route path="/" element={<Navigate to="/admin/login" replace />} />
+                <Route path='/admin/login' element={<Login/>} />
                 <Route path='/admin' element={<Welcome />} />
                 <Route path='/admin/orders' element={<Orders />} />
                 <Route path='/admin/brands' element={<Brands />} />
@@ -53,6 +59,9 @@ export const NavRouters = () => {
                 <Route path='/admin/delivery-route' element={<DeliveryRoute/>}/>
                 <Route path='/admin/time-slot' element={<TimeSlot/>}/>
                 <Route path='/admin/product-review' element={<ProductReview/>}/>
+                <Route path='/admin/new-admin' element={<NewAdmin/>}/>
+                <Route path='/admin/update-password' element={<UpdatePasswordAdmin/>}/>
+                <Route path='/admin/brands/update-brand/:brandId' element={<UpdateBrand/>} />
                 <Route path='/admin/brands/add-brand' element={<AddBrand/>} />
                 <Route path='/admin/category/update-brand/:brandId' element={<UpdateBrand/>}/>
                 <Route path='/admin/Category/update-category/:categoryId' element={<UpdateCategory/>}/>

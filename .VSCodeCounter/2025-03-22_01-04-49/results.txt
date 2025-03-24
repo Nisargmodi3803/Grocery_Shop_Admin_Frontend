@@ -1,0 +1,77 @@
+Date : 2025-03-22 01:04:49
+Directory : d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components
+Total : 52 files,  5877 codes, 46 comments, 709 blanks, all 6632 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JavaScript JSX |         32 |      5,077 |         37 |        581 |      5,695 |
+| CSS            |         20 |        800 |          9 |        128 |        937 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                      | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                         |         52 |      5,877 |         46 |        709 |      6,632 |
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                  | language       | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddBlog.jsx           | JavaScript JSX |        177 |          0 |         19 |        196 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddBrand.css          | CSS            |          0 |          0 |          1 |          1 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddBrand.jsx          | JavaScript JSX |        154 |          0 |         19 |        173 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddCategory.jsx       | JavaScript JSX |        166 |          0 |         18 |        184 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddCity.jsx           | JavaScript JSX |         87 |          0 |          5 |         92 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddSubcategory.jsx    | JavaScript JSX |        251 |          0 |         26 |        277 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\AddTimeSlot.jsx       | JavaScript JSX |         66 |          0 |          6 |         72 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Banner.css            | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Banner.jsx            | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Blog.css              | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Blog.jsx              | JavaScript JSX |        320 |          6 |         39 |        365 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Brands.css            | CSS            |        180 |          3 |         37 |        220 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Brands.jsx            | JavaScript JSX |        306 |          6 |         39 |        351 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Category.css          | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Category.jsx          | JavaScript JSX |        310 |          6 |         39 |        355 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\City.css              | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\City.jsx              | JavaScript JSX |        290 |          7 |         38 |        335 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Contact.css           | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Contact.jsx           | JavaScript JSX |        340 |          1 |         43 |        384 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\CouponCode.css        | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\CouponCode.jsx        | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Customers.css         | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Customers.jsx         | JavaScript JSX |        369 |          6 |         41 |        416 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\DeliveryRoute.css     | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\DeliveryRoute.jsx     | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Header.css            | CSS            |         44 |          5 |          7 |         56 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Header.jsx            | JavaScript JSX |         24 |          0 |          4 |         28 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\NavRouters.jsx        | JavaScript JSX |         70 |          0 |          2 |         72 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Orders.css            | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Orders.jsx            | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\PriceChange.css       | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\PriceChange.jsx       | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Product.css           | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Product.jsx           | JavaScript JSX |         11 |          0 |          2 |         13 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\ProductInquiry.css    | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\ProductInquiry.jsx    | JavaScript JSX |        312 |          0 |         30 |        342 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\ProductReview.jsx     | JavaScript JSX |         10 |          0 |          2 |         12 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\SideBar.css           | CSS            |         39 |          0 |          8 |         47 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Sidebar.jsx           | JavaScript JSX |         92 |          0 |         19 |        111 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Subcategory.css       | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Subcategory.jsx       | JavaScript JSX |        314 |          5 |         39 |        358 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\TimeSlot.css          | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\TimeSlot.jsx          | JavaScript JSX |        297 |          0 |         44 |        341 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateBlog.jsx        | JavaScript JSX |        201 |          0 |         19 |        220 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateBrand.css       | CSS            |        192 |          1 |         30 |        223 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateBrand.jsx       | JavaScript JSX |        179 |          0 |         17 |        196 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateCategory.jsx    | JavaScript JSX |        191 |          0 |         17 |        208 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateCity.jsx        | JavaScript JSX |        107 |          0 |          6 |        113 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateSubcategory.jsx | JavaScript JSX |        280 |          0 |         27 |        307 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\UpdateTimeSlot.jsx    | JavaScript JSX |         87 |          0 |          9 |         96 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Welcome.css           | CSS            |         23 |          0 |          3 |         26 |
+| d:\Sem-8\Grocery_Shop_Admin_Frontend\src\Components\Welcome.jsx           | JavaScript JSX |         11 |          0 |          2 |         13 |
+| Total                                                                     |                |      5,877 |         46 |        709 |      6,632 |
++---------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

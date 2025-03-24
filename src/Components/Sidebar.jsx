@@ -16,6 +16,8 @@ import { FaTruck } from "react-icons/fa";
 import { HiSpeakerphone } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
+import { FaLock } from "react-icons/fa";
+import { RiAdminFill } from "react-icons/ri";
 
 const Sidebar = ({ activeId }) => {
   const navigate = useNavigate();
@@ -101,6 +103,16 @@ const Sidebar = ({ activeId }) => {
         <li className={activeId === 16 && "active"}
           onClick={() => navigate("/admin/product-review")}>
           <FaStar /> Product Review
+        </li>
+
+        <li className={activeId === 17 && "active"}
+          onClick={() => navigate("/admin/update-password")}>
+          <FaLock /> Update Password
+        </li>
+
+        <li className={activeId === 18 && "active"}
+          onClick={() => navigate("/admin/new-admin")}>
+          <RiAdminFill /> New Admin
         </li>
       </ul>
     </div>

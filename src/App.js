@@ -8,11 +8,8 @@ import { NavRouters } from './Components/NavRouters';
 function App() {
   return (
     <div className="App">
-      <Header/>
-      {/* <Sidebar/> */}
-      <BrowserRouter>
-        <NavRouters/>
-      </BrowserRouter>
+      <Header />
+      <NavRouters />
     </div>
   );
 }
