@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export const Login = () => {
     const [username, setUsername] = useState('');
@@ -23,12 +24,32 @@ export const Login = () => {
                 sessionStorage.setItem('isAuthenticated', "true");
                 sessionStorage.setItem('username', username);
                 navigate('/admin');
-            } else {
-                alert('Invalid username or password');
+            } else if (response.status === 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Invalid username or password',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             }
         } catch (error) {
             if (error.response.status === 404) {
-                alert('Invalid username or password');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Invalid username or password',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else if (error.response.status === 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Bad Request',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             } else {
                 console.error(error);
                 alert('Something went wrong while logging in.');

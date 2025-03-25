@@ -33,6 +33,10 @@ import { ProductReview } from './ProductReview';
 import { NewAdmin } from './NewAdmin';
 import { UpdatePasswordAdmin } from './UpdatePasswordAdmin';
 import { Login } from './Login';
+import { UpdateDeliveryRoute } from './UpdateDeliveryRoute';
+import { AddDeliveryRoute } from './AddDeliveryRoute';
+import { UpdateCouponCode } from './UpdateCouponCode';
+import { AddCouponCode } from './AddCouponCode';
 
 export const NavRouters = () => {
 
@@ -56,7 +60,7 @@ export const NavRouters = () => {
                 <Route path='/admin/offer-banner' element={<Banner/>}/>
                 <Route path='/admin/contact' element={<Contact/>}/>
                 <Route path='/admin/product-inquiry' element={<ProductInquiry/>}/>
-                <Route path='/admin/delivery-route' element={<DeliveryRoute/>}/>
+                <Route path='/admin/delivery-boy' element={<DeliveryRoute/>}/>
                 <Route path='/admin/time-slot' element={<TimeSlot/>}/>
                 <Route path='/admin/product-review' element={<ProductReview/>}/>
                 <Route path='/admin/new-admin' element={<NewAdmin/>}/>
@@ -74,6 +78,10 @@ export const NavRouters = () => {
                 <Route path='/admin/blogs/update-blog/:blogId' element={<UpdateBlog />}/>
                 <Route path='/admin/time-slot/update-slot/:slotId' element={<UpdateTimeSlot/>}/>
                 <Route path='/admin/time-slot/add-slot' element={<AddTimeSlot/>}/>
+                <Route path='/admin/delivery-boy/update-delivery-boy/:deliveryBoyId' element={<UpdateDeliveryRoute/>}/>
+                <Route path='/admin/delivery-boy/add-delivery-boy' element={<AddDeliveryRoute/>}/>
+                <Route path='/admin/coupon/update-coupon/:couponId' element={<UpdateCouponCode />}/>
+                <Route path='/admin/coupon/add-coupon' element={<AddCouponCode />}/>
             </Routes>
         </>
     )

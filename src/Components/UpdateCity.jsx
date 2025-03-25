@@ -55,6 +55,7 @@ export const UpdateCity = () => {
             alert('Something went wrong while updating the City.');
         }
     };
+    
     return (
         <div className='update-brand'>
             <Sidebar activeId={6} />

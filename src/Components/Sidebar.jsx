@@ -75,10 +75,10 @@ const Sidebar = ({ activeId }) => {
           <MdOutlinePriceChange /> Bulk Price Change
         </li>
 
-        <li className={activeId === 11 && "active"}
+        {/* <li className={activeId === 11 && "active"}
           onClick={() => navigate("/admin/offer-banner")}>
           <FaGift /> Offer Banner
-        </li>
+        </li> */}
 
         <li className={activeId === 12 && "active"}
           onClick={() => navigate("/admin/contact")}>
@@ -86,8 +86,8 @@ const Sidebar = ({ activeId }) => {
         </li>
 
         <li className={activeId === 13 && "active"}
-          onClick={() => navigate("/admin/delivery-route")}>
-          <FaTruck /> Delivery Route
+          onClick={() => navigate("/admin/delivery-boy")}>
+          <FaTruck /> Delivery Boy
         </li>
 
         <li className={activeId === 14 && "active"}
