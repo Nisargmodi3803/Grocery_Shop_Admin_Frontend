@@ -163,7 +163,7 @@ export const Contact = () => {
             <tbody>
     `;
 
-    paginatedContacts.forEach((contact) => {
+    contacts.forEach((contact) => {
       printContent += `
             <tr>
                 <td>${contact.id}</td>

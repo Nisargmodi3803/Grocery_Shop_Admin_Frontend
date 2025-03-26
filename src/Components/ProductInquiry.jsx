@@ -141,7 +141,7 @@ export const ProductInquiry = () => {
             <tbody>
     `;
 
-    paginatedInquiries.forEach((inquiry) => {
+    inquiries.forEach((inquiry) => {
       printContent += `
             <tr>
                 <td>${inquiry.inquiryId}</td>

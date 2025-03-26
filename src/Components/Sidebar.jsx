@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa6";
 import { FaLock } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
+import { TbArrowsSort } from "react-icons/tb";
 
 const Sidebar = ({ activeId }) => {
   const navigate = useNavigate();
@@ -75,10 +76,10 @@ const Sidebar = ({ activeId }) => {
           <MdOutlinePriceChange /> Bulk Price Change
         </li>
 
-        {/* <li className={activeId === 11 && "active"}
-          onClick={() => navigate("/admin/offer-banner")}>
-          <FaGift /> Offer Banner
-        </li> */}
+        <li className={activeId === 11 && "active"}
+          onClick={() => navigate("/admin/point-transaction")}>
+          <TbArrowsSort /> Point Transaction
+        </li>
 
         <li className={activeId === 12 && "active"}
           onClick={() => navigate("/admin/contact")}>

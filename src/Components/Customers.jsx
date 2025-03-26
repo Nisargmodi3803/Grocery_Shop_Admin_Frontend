@@ -118,7 +118,7 @@ export const Customers = () => {
             <tbody>
     `;
 
-    paginatedCustomers.forEach((customer) => {
+    customers.forEach((customer) => {
       printContent += `
             <tr>
                 <td>${customer.customerId}</td>

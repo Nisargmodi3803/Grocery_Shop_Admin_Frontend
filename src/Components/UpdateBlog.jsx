@@ -24,6 +24,7 @@ export const UpdateBlog = () => {
     const [date, setDate] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
+    const [newSlugTitle, setNewSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
     const [oldSlugTitle, setOldSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
@@ -38,7 +39,7 @@ export const UpdateBlog = () => {
         const formData = new FormData();
         formData.append('title', name);
         formData.append('description', description);
-        formData.append('slugTitle', slugTitle);
+        formData.append('slugTitle', newSlugTitle);
         formData.append('date', date);
         if (imageFile) {
             formData.append('imageFile', imageFile);
@@ -79,7 +80,7 @@ export const UpdateBlog = () => {
                 setDescription(blogData.description || '');
                 setSlugTitle(blogData.slug_title || '');
                 setDate(blogData.date || '');
-                setOldSlugTitle(blogData.slug_title || '');
+                setNewSlugTitle(blogData.slug_title || '');
                 const imageSrc = imageMap[blogData.image_url] || `http://localhost:9000/uploads/${blogData.image_url}`;
                 setExistingImage(imageSrc);
             }
@@ -96,59 +97,47 @@ export const UpdateBlog = () => {
     }, [blogId]);
 
     const handleNameChange = async (e) => {
-        setName(e.target.value);
-        const slugTitle = e.target.value
+        const value = e.target.value;
+        setName(value);
+        const slug = value
             .toLowerCase()
-            .replace(/[\s\(\)\[\]\{\}]+/g, '-')  // Replace all whitespaces & brackets with '-'
+            .replace(/[\s\(\)\[\]\{\}]+/g, '-');
 
-
-        setSlugTitle(slugTitle);
-
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${slugTitle}`)
-
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
     };
 
     const handleSlugTitleChange = async (e) => {
-        setSlugTitle(e.target.value);
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${e.target.value}`)
+        const slug = e.target.value.toLowerCase().replace(/[\s\(\)\[\]\{\}]+/g, '-');
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
+    };
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
+    const checkSlugAvailability = async (slug) => {
+        // If same as original slug for current product, no need to check
+        if (slug === slugTitle) {
+            setIsSlugTitleExist(false);
+            return;
         }
-    }
+
+        try {
+            const response = await axios.get(`http://localhost:9000/check-blog-slug-title?slugTitle=${slug}`);
+            setIsSlugTitleExist(response.data === true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     function formatDate(dateStr) {
-            if (!dateStr) return "Not Specified Yet";
-            try {
-                const date = parseISO(dateStr); // parseISO works with YYYY-MM-DD
-                return isValid(date) ? format(date, "dd-MM-yyyy") : "Invalid Date";
-            } catch (error) {
-                return "Invalid Date";
-            }
+        if (!dateStr) return "Not Specified Yet";
+        try {
+            const date = parseISO(dateStr); // parseISO works with YYYY-MM-DD
+            return isValid(date) ? format(date, "dd-MM-yyyy") : "Invalid Date";
+        } catch (error) {
+            return "Invalid Date";
         }
+    }
 
     return (
         <div className='update-brand'>
@@ -171,12 +160,13 @@ export const UpdateBlog = () => {
                             <label>Slug Title <span className="required">*</span></label>
                             <input
                                 type="text"
-                                value={slugTitle}
+                                value={newSlugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
                                 placeholder='Blog Slug Title'
                             />
                         </div>
+                            {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
                         <div className='form-group'>
                             <label>Date <span className="required">*</span></label>
                             <input
@@ -187,7 +177,6 @@ export const UpdateBlog = () => {
                                 required
                             />
                         </div>
-                        {isSlugTitleExist == true && <p className="error">Slug title already exist!</p>}
                         <div className="form-group">
                             <label>Description</label>
                             <input
@@ -208,7 +197,7 @@ export const UpdateBlog = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Update</button>
+                            <button type="submit" className="update-btn" disabled={isSlugTitleExist} >Update</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>

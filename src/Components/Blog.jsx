@@ -114,7 +114,7 @@ export const Blog = () => {
             <tbody>
     `;
 
-    paginatedBlogs.forEach((blog) => {
+    blogs.forEach((blog) => {
       const imageSrc = imageMap[blog.image_url] || `http://localhost:9000/uploads/${blog.image_url}`;
       printContent += `
             <tr>

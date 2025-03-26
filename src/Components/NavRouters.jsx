@@ -37,6 +37,10 @@ import { UpdateDeliveryRoute } from './UpdateDeliveryRoute';
 import { AddDeliveryRoute } from './AddDeliveryRoute';
 import { UpdateCouponCode } from './UpdateCouponCode';
 import { AddCouponCode } from './AddCouponCode';
+import { UpdateProduct } from './UpdateProduct';
+import { AddProduct } from './AddProduct';
+import { DuplicateProduct } from './DuplicateProduct';
+import { PointTransaction } from './PointTransaction';
 
 export const NavRouters = () => {
 
@@ -57,7 +61,7 @@ export const NavRouters = () => {
                 <Route path='/admin/coupon' element={<CouponCode />}/>
                 <Route path='/admin/blogs' element={<Blog/>}/>
                 <Route path='/admin/bulk-price' element={<PriceChange/>}/>
-                <Route path='/admin/offer-banner' element={<Banner/>}/>
+                <Route path='/admin/point-transaction' element={<PointTransaction/>}/>
                 <Route path='/admin/contact' element={<Contact/>}/>
                 <Route path='/admin/product-inquiry' element={<ProductInquiry/>}/>
                 <Route path='/admin/delivery-boy' element={<DeliveryRoute/>}/>
@@ -82,6 +86,9 @@ export const NavRouters = () => {
                 <Route path='/admin/delivery-boy/add-delivery-boy' element={<AddDeliveryRoute/>}/>
                 <Route path='/admin/coupon/update-coupon/:couponId' element={<UpdateCouponCode />}/>
                 <Route path='/admin/coupon/add-coupon' element={<AddCouponCode />}/>
+                <Route path='/admin/product/update-product/:productId' element={<UpdateProduct />} />
+                <Route path='/admin/product/duplicate-product/:productId' element={<DuplicateProduct />} />
+                <Route path='/admin/product/add-product' element={<AddProduct />} />
             </Routes>
         </>
     )

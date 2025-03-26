@@ -18,8 +18,141 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.product-table th,
+.product-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.product-table th {
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.product-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.search-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, #ffffff, #f7faff);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 50px 20px;
+}
+
+
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.custom-dropdown1 {
+    position: relative;
+    width: 200px;
+}
+
+.custom-dropdown1 label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: #133365;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+}
+
+.dropdown-header1 {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+}
+
+.dropdown-list1 {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+    max-height: 250px;
+    overflow: auto;
+    margin-top: 5px;
+}
+
+.dropdown-search1 {
+    width: 100%;
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.dropdown-item1 {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.dropdown-item1:hover{
+    background-color: #00acc1;
+    color: white;
+}
+
+.dropdown-item1.selected {
+    background-color: #133365;
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.buttons button {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    background-color: #133365;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.buttons button:hover {
+    background-color: #0b1c2d;
+}
+
+.buttons button:active {
+    background-color: #0b1c2d;
+    transform: translateY(2px);
 }

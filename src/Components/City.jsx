@@ -101,7 +101,7 @@ export const City = () => {
             <tbody>
     `;
 
-    paginatedCities.forEach((city) => {
+    cities.forEach((city) => {
       printContent += `
             <tr>
                 <td>${city.cityId}</td>

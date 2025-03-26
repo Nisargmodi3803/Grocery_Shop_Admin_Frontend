@@ -157,7 +157,7 @@ export const CouponCode = () => {
             <tbody>
     `;
 
-    paginatedCodes.forEach((code) => {
+    codes.forEach((code) => {
       printContent += `
             <tr>
                 <td>${code.couponId}</td>

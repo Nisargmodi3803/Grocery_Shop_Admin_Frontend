@@ -113,7 +113,7 @@ export const Subcategory = () => {
                   <tbody>
           `;
 
-    paginatedSubcategory.forEach((subcategory) => {
+    subcategory.forEach((subcategory) => {
       const imageSrc = imageMap[subcategory.image_url] || `http://localhost:9000/uploads/${subcategory.image_url}`;
       printContent += `
                   <tr>

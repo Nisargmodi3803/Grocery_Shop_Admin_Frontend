@@ -112,7 +112,7 @@ export const Brands = () => {
                 <tbody>
         `;
 
-        paginatedBrands.forEach((brand) => {
+        brands.forEach((brand) => {
             const imageSrc = imageMap[brand.image_url] || `http://localhost:9000/uploads/${brand.image_url}`;
             printContent += `
                 <tr>

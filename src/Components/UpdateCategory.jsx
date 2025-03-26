@@ -23,7 +23,7 @@ export const UpdateCategory = () => {
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
-    const [oldSlugTitle, setOldSlugTitle] = useState('');
+    const [newSlugTitle, setNewSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
 
     const handleImageChange = (e) => {
@@ -36,7 +36,7 @@ export const UpdateCategory = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
-        formData.append('slugTitle', slugTitle);
+        formData.append('slugTitle', newSlugTitle);
         formData.append('priority', priority);
         if (imageFile) {
             formData.append('imageFile', imageFile);
@@ -76,7 +76,7 @@ export const UpdateCategory = () => {
                 setName(categoryData.name || '');
                 setDescription(categoryData.description || '');
                 setSlugTitle(categoryData.slug_title || '');
-                setOldSlugTitle(categoryData.slug_title || '');
+                setNewSlugTitle(categoryData.slug_title || '');
                 setPriority(categoryData.priority);
                 const imageSrc = imageMap[categoryData.image_url] || `http://localhost:9000/uploads/${categoryData.image_url}`;
                 setExistingImage(imageSrc);
@@ -94,49 +94,37 @@ export const UpdateCategory = () => {
     }, [categoryId]);
 
     const handleNameChange = async (e) => {
-        setName(e.target.value);
-        const slugTitle = e.target.value
+        const value = e.target.value;
+        setName(value);
+        const slug = value
             .toLowerCase()
-            .replace(/[\s\(\)\[\]\{\}]+/g, '-')  // Replace all whitespaces & brackets with '-'
+            .replace(/[\s\(\)\[\]\{\}]+/g, '-');
 
-
-        setSlugTitle(slugTitle);
-
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slugTitle}`)
-
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
     };
 
     const handleSlugTitleChange = async (e) => {
-        setSlugTitle(e.target.value);
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${e.target.value}`)
+        const slug = e.target.value.toLowerCase().replace(/[\s\(\)\[\]\{\}]+/g, '-');
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
+    };
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
+    const checkSlugAvailability = async (slug) => {
+        // If same as original slug for current product, no need to check
+        if (slug === slugTitle) {
+            setIsSlugTitleExist(false);
+            return;
         }
-    }
+
+        try {
+            const response = await axios.get(`http://localhost:9000/check-category-slug-title?slugTitle=${slug}`);
+            setIsSlugTitleExist(response.data === true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
     return (
         <div className='update-brand'>
@@ -159,7 +147,7 @@ export const UpdateCategory = () => {
                             <label>Slug Title <span className="required">*</span></label>
                             <input
                                 type="text"
-                                value={slugTitle}
+                                value={newSlugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
                                 placeholder="Category Slug Title"
@@ -196,7 +184,7 @@ export const UpdateCategory = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Update</button>
+                            <button type="submit" className="update-btn" disabled={isSlugTitleExist} >Update</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>

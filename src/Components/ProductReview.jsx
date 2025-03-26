@@ -208,7 +208,7 @@ export const ProductReview = () => {
             <tbody>
     `;
 
-    paginatedReviews.forEach((review) => {
+    reviews.forEach((review) => {
       printContent += `
             <tr>
                 <td>${review.ratingId}</td>

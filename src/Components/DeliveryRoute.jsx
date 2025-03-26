@@ -135,7 +135,7 @@ export const DeliveryRoute = () => {
             <tbody>
     `;
 
-    paginatedDeliveryBoys.forEach((boy) => {
+    deliveryBoys.forEach((boy) => {
       printContent += `
             <tr>
                 <td>${boy.deliveryBoyId}</td>

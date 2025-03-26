@@ -7,6 +7,7 @@
     margin-top: 100px;
     padding: 20px;
     padding-top: 0px;
+    
 }
 
 .brand-header {
@@ -182,12 +183,14 @@
     color: #FFA500;
     margin-right: 10px;
     cursor: pointer;
+    font-size: 20px;
 }
 
 .rejected-icon {
     color: #FF0000;
     margin-right: 10px;
     cursor: pointer;
+    font-size: 20px;
 }
 
 .approved-icon {
@@ -197,7 +200,14 @@
     font-size: 22px;
 }
 
-.edit-icon, .delete-icon, .pending-icon, .rejected-icon, .approved-icon {
+.duplicate-icon {
+    color: #0091F7;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.edit-icon, .delete-icon, .pending-icon, .rejected-icon, .approved-icon, .duplicate-icon {
     cursor: pointer;
     transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -205,6 +215,7 @@
 .edit-icon {
     color: #4CAF50;
     margin-right: 10px;
+    font-size: 20px;
 }
 
 .edit-icon:hover {
@@ -214,6 +225,7 @@
 
 .delete-icon {
     color: #f44336;
+    font-size: 20px;
 }
 
 .delete-icon:hover {
@@ -234,6 +246,11 @@
 .approved-icon:hover {
     transform: scale(1.05);
     color: #4CAF50;
+}
+
+.duplicate-icon:hover {
+    transform: scale(1.05);
+    color: #012c4a;
 }
 
 .brand-table td.description,

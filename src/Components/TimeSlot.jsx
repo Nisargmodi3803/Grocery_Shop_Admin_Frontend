@@ -126,7 +126,7 @@ export const TimeSlot = () => {
             <tbody>
     `;
 
-    paginatedSlots.forEach((slot) => {
+    slots.forEach((slot) => {
       printContent += `
             <tr>
                 <td>${slot.deliveryTimeSlotId}</td>

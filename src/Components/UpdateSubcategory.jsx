@@ -25,7 +25,7 @@ export const UpdateSubcategory = () => {
     const [imageFile, setImageFile] = useState(null);
     const [slugTitle, setSlugTitle] = useState('');
     const [existingImage, setExistingImage] = useState('');
-    const [oldSlugTitle, setOldSlugTitle] = useState('');
+    const [newSlugTitle, setNewSlugTitle] = useState('');
     const [isSlugTitleExist, setIsSlugTitleExist] = useState();
     const [categories, setCategories] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -49,7 +49,7 @@ export const UpdateSubcategory = () => {
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
-        formData.append('slugTitle', slugTitle);
+        formData.append('slugTitle', newSlugTitle);
         formData.append('categoryId', categoryId);
         formData.append('priority', priority);
         if (imageFile) {
@@ -90,7 +90,7 @@ export const UpdateSubcategory = () => {
                 setName(subcategoryData.name || '');
                 setDescription(subcategoryData.description || '');
                 setSlugTitle(subcategoryData.slug_title || '');
-                setOldSlugTitle(subcategoryData.slug_title || '');
+                setNewSlugTitle(subcategoryData.slug_title || '');
                 setPriority(subcategoryData.priority);
                 setCategoryId(subcategoryData.category?.id);
                 const imageSrc = imageMap[subcategoryData.image_url] || `http://localhost:9000/uploads/${subcategoryData.image_url}`;
@@ -132,53 +132,39 @@ export const UpdateSubcategory = () => {
             loadSubcategoryAndCategories();
         }
     }, [subcategoryId]);
-    
+
 
     const handleNameChange = async (e) => {
-        setName(e.target.value);
-        const slugTitle = e.target.value
+        const value = e.target.value;
+        setName(value);
+        const slug = value
             .toLowerCase()
-            .replace(/[\s\(\)\[\]\{\}]+/g, '-')  // Replace all whitespaces & brackets with '-'
+            .replace(/[\s\(\)\[\]\{\}]+/g, '-');
 
-
-        setSlugTitle(slugTitle);
-
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-subcategory-slug-title?slugTitle=${slugTitle}`)
-
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
     };
 
     const handleSlugTitleChange = async (e) => {
-        setSlugTitle(e.target.value);
-        if (slugTitle !== oldSlugTitle) {
-            try {
-                const response = await axios.get(`http://localhost:9000/check-subcategory-slug-title?slugTitle=${e.target.value}`)
+        const slug = e.target.value.toLowerCase().replace(/[\s\(\)\[\]\{\}]+/g, '-');
+        setNewSlugTitle(slug);
+        checkSlugAvailability(slug);
+    };
 
-                if (response.status == 200) {
-                    if (response.data == true) {
-                        setIsSlugTitleExist(response.data);
-                    } else {
-                        setIsSlugTitleExist(response.data);
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
+    const checkSlugAvailability = async (slug) => {
+        // If same as original slug for current product, no need to check
+        if (slug === slugTitle) {
+            setIsSlugTitleExist(false);
+            return;
         }
-    }
 
+        try {
+            const response = await axios.get(`http://localhost:9000/check-subcategory-slug-title?slugTitle=${slug}`);
+            setIsSlugTitleExist(response.data === true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const handleSelect = (cat) => {
         setSelectedCategory(cat);
         setShowDropdown(false);
@@ -198,7 +184,7 @@ export const UpdateSubcategory = () => {
         }
     }, [categoryId, categories]);
 
-    
+
     return (
         <div className='update-brand'>
             <Sidebar activeId={3} />
@@ -234,7 +220,7 @@ export const UpdateSubcategory = () => {
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="dropdown-search"
-                                        ref={searchInputRef} 
+                                        ref={searchInputRef}
                                     />
                                     <div className="dropdown-items-container">
                                         {filteredCategories.length > 0 && (
@@ -258,7 +244,7 @@ export const UpdateSubcategory = () => {
                             <label>Slug Title <span className="required">*</span></label>
                             <input
                                 type="text"
-                                value={slugTitle}
+                                value={newSlugTitle}
                                 onChange={(e) => handleSlugTitleChange(e)}
                                 required
                                 placeholder="Subcategory Slug Title"
@@ -295,7 +281,7 @@ export const UpdateSubcategory = () => {
                             ) : null}
                         </div>
                         <div className="button-group">
-                            <button type="submit" className="update-btn">Update</button>
+                            <button type="submit" className="update-btn" disabled={isSlugTitleExist} >Update</button>
                             <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
                         </div>
                     </div>
