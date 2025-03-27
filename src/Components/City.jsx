@@ -281,7 +281,7 @@ export const City = () => {
                     {city.cityId}
                   </td>
                   <td>{city.cityName}</td>
-                  <td>{city.cityIsActive===1 ? 'Active' : 'Inactive'}</td>
+                  <td>{city.cityIsActive===1 ? <span style={{ color: 'green' }}>Active</span> : <span style={{ color: 'red' }}>Inactive</span>}</td>
                   <td className="action-buttons">
                     <FaPencilAlt
                       className="edit-icon"

@@ -35,6 +35,7 @@ export const Product = () => {
   const [categoryId, setCategoryId] = useState();
   const [subcategoryId, setSubcategoryId] = useState();
   const [openDropdown, setOpenDropdown] = useState('');
+  const [isSearchResultsFound, setIsSearchResultsFound] = useState(true);
 
   const toggleDropdown = (dropdownType) => {
     setSearchTerm('');
@@ -120,6 +121,7 @@ export const Product = () => {
       const response = await axios.get(`http://localhost:9000/subcategories-category/${categoryId}`);
       if (response.status === 200) {
         setSubcategories(response.data);
+        setSubcategoryId(response.data[0].id);
 
         if (subcategoryId) {
           const defaultSubcategory = response.data.find(sub => sub.id === subcategoryId);
@@ -140,7 +142,7 @@ export const Product = () => {
     if (categoryId) {
       fetchSubcategories();
     }
-  }, [categoryId, subcategoryId]);
+  }, [categoryId]);
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
@@ -409,7 +411,13 @@ export const Product = () => {
 
   const handleSearch = async () => {
     if (categoryId === undefined || subcategoryId === undefined) {
-      alert("Please select Category and Subcategory to search products");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: 'Please select Category and Subcategory to search products',
+        showConfirmButton: true,
+        confirmButtonText: 'OK'
+      })
       return;
     }
 
@@ -417,6 +425,7 @@ export const Product = () => {
       const response = await axios.get(`http://localhost:9000/products-subcategory/${subcategoryId}`);
       if (response.status === 200) {
         setProducts(response.data);
+        setIsSearchResultsFound(false);
       }
     } catch (error) {
       if (error.response?.status === 404) {
@@ -436,6 +445,7 @@ export const Product = () => {
     setSubcategoryId(null);
     setOpenDropdown('');
     fetchProducts();
+    setIsSearchResultsFound(true);
   };
 
 
@@ -528,7 +538,7 @@ export const Product = () => {
           </div>
           <div className='buttons'>
             <button onClick={handleSearch}>Search</button>
-            <button onClick={handleViewAll}>View All</button>
+            <button disabled={isSearchResultsFound} onClick={handleViewAll}>Clear</button>
           </div>
         </div>
         <div className="brand-header">

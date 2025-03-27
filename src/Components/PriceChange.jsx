@@ -2,27 +2,11 @@ import './PriceChange.css'
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './Sidebar';
 import axios from 'axios';
-import { FaPencilAlt } from "react-icons/fa";
-import { RiDeleteBin5Line } from "react-icons/ri";
-import { HiOutlineDuplicate } from "react-icons/hi";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 export const PriceChange = () => {
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 10;
-  const totalPages = Math.ceil(products.length / ordersPerPage);
-  const startIndex = (currentPage - 1) * ordersPerPage;
-  const endIndex = startIndex + ordersPerPage;
-  const paginatedProducts = products.slice(startIndex, endIndex);
-  const maxPageNumbersToShow = 4;
-  const startPage = Math.max(1, currentPage - Math.floor(maxPageNumbersToShow / 2));
-  const endPage = Math.min(totalPages, startPage + maxPageNumbersToShow - 1);
-  const [showResult, setShowResult] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [showDropdownCategory, setShowDropdownCategory] = useState(false);
@@ -35,6 +19,8 @@ export const PriceChange = () => {
   const [categoryId, setCategoryId] = useState();
   const [subcategoryId, setSubcategoryId] = useState();
   const [openDropdown, setOpenDropdown] = useState('');
+  const [isSearchResultsFound, setIsSearchResultsFound] = useState(true);
+  const startIndex = 0;
 
   const toggleDropdown = (dropdownType) => {
     setSearchTerm('');
@@ -120,7 +106,7 @@ export const PriceChange = () => {
       const response = await axios.get(`http://localhost:9000/subcategories-category/${categoryId}`);
       if (response.status === 200) {
         setSubcategories(response.data);
-
+        setSubcategoryId(response.data[0].id);
         if (subcategoryId) {
           const defaultSubcategory = response.data.find(sub => sub.id === subcategoryId);
           setSelectedSubcategory(defaultSubcategory);
@@ -138,7 +124,13 @@ export const PriceChange = () => {
 
   const handleSearch = async () => {
     if (categoryId === undefined || subcategoryId === undefined) {
-      alert("Please select Category and Subcategory to search products");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: 'Please select Category and Subcategory to search products',
+        showConfirmButton: true,
+        confirmButtonText: 'OK'
+      })
       return;
     }
 
@@ -146,6 +138,7 @@ export const PriceChange = () => {
       const response = await axios.get(`http://localhost:9000/products-subcategory/${subcategoryId}`);
       if (response.status === 200) {
         setProducts(response.data);
+        setIsSearchResultsFound(false);
       }
     } catch (error) {
       if (error.response?.status === 404) {
@@ -161,7 +154,50 @@ export const PriceChange = () => {
     if (categoryId) {
       fetchSubcategories();
     }
-  }, [categoryId, subcategoryId]);
+  }, [categoryId]);
+
+  const handleClear = async () => {
+    setSearchTerm('');
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setCategoryId(null);
+    setSubcategoryId(null);
+    setOpenDropdown('');
+    setIsSearchResultsFound(true);
+    setProducts([]);
+  };
+
+  const handleUpdate = (id, field, value) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id ? { ...product, [field]: value } : product
+      )
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.patch(
+        `http://localhost:9000/bulk-price`,
+        products
+      );
+      if (response.status === 200) {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'Product Price has been Updated successfully.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        navigate('/admin/bulk-price');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Something went wrong while Updating the Product.');
+    }
+  };
 
   return (
     <div className='update-brand'>
@@ -171,7 +207,7 @@ export const PriceChange = () => {
         <div className='search-filter1'>
           <div className='filter1'>
             <div className="custom-dropdown2">
-              <label>Category</label>
+              <label>Category <span className="required">*</span></label>
               <div
                 className="dropdown-header2"
                 onClick={() => toggleDropdown('category')}
@@ -211,7 +247,7 @@ export const PriceChange = () => {
               )}
             </div>
             <div className="custom-dropdown2">
-              <label>Subcategory</label>
+              <label>Subcategory <span className="required">*</span></label>
               <div
                 className="dropdown-header2"
                 onClick={() => toggleDropdown('subcategory')}
@@ -253,8 +289,82 @@ export const PriceChange = () => {
           </div>
           <div className='buttons'>
             <button onClick={handleSearch}>Search</button>
+            <button disabled={isSearchResultsFound} onClick={handleClear}>Clear</button>
           </div>
         </div>
+        {
+          products.length > 0 && (
+            <>
+              <div className="brand-header">
+                <h3>PRODUCT LIST</h3>
+              </div>
+              <table className="product-table1">
+                <thead>
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>Product Name</th>
+                    <th>Base Price</th>
+                    <th>MRP</th>
+                    <th>Retailer Price</th>
+                    <th>Wholesaler Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.length > 0 ? (
+                    products.map((product, index) => (
+                      <tr key={product.id}>
+                        <td>{index + 1}</td>
+                        <td style={{ textAlign: "left" }}>
+                          {product.name} - {product.variantName}
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            value={product.basePrice }
+                            disabled
+                            style={{cursor:"not-allowed",backgroundColor:"#EEF1F5",border:"1px solid #D5DBE4"}}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            value={product.mrp}
+                            onChange={(e) => handleUpdate(product.id, "mrp", e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            value={product.discount_amt}
+                            onChange={(e) => handleUpdate(product.id, "discount_amt", e.target.value)}
+                            
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            value={product.wholesaler_amt}
+                            onChange={(e) => handleUpdate(product.id, "wholesaler_amt", e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" style={{ textAlign: "center" }}>
+                        No data available in table
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              <div className="button-group">
+                <button type="submit" onClick={handleSubmit} className="update-btn">Update</button>
+                <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   )

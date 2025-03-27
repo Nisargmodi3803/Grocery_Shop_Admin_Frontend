@@ -18,8 +18,119 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.date-range-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.date-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: #133365;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    text-align: left;
+}
+
+.date-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 100px;
+}
+
+.date-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    width: 120px;
+}
+
+.to-text {
+    font-size: 16px;
+    color: #555;
+    font-weight: 600;
+}
+
+.search-btn {
+    background-color: #133365;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+.Pending {
+    color: #ff9800;
+}
+
+.Confirm {
+    color: #4caf50;
+}
+
+.Dispatched {
+    color: #2196f3;
+}
+
+.Delivered {
+    color: #2e7d32;
+}
+
+.Rejected {
+    color: #d32f2f;
+}
+
+.Cancelled {
+    color: #d32f2f;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th,
+.order-table td {
+    border: 1px solid #ddd;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    white-space: normal !important;
+    /* allows text to wrap */
+    word-break: break-word;
+    /* breaks long words if needed */
+    max-width: 150px;
+    /* adjust based on how wide you want */
+}
+
+.order-table th {
+    background-color: #f7f7f7;
+    font-weight: bold;
+}
+
+.order-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.order-table th:nth-child(13),
+.order-table td:nth-child(13) {
+    padding-right: 5px;
+    padding-left: 5px;
 }

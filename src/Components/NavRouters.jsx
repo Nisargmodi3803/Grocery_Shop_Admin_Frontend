@@ -41,6 +41,7 @@ import { UpdateProduct } from './UpdateProduct';
 import { AddProduct } from './AddProduct';
 import { DuplicateProduct } from './DuplicateProduct';
 import { PointTransaction } from './PointTransaction';
+import { Dashboard } from './Dashboard';
 
 export const NavRouters = () => {
 
@@ -63,6 +64,7 @@ export const NavRouters = () => {
                 <Route path='/admin/bulk-price' element={<PriceChange/>}/>
                 <Route path='/admin/point-transaction' element={<PointTransaction/>}/>
                 <Route path='/admin/contact' element={<Contact/>}/>
+                <Route path='/admin/dashboard' element={<Dashboard/>}/>
                 <Route path='/admin/product-inquiry' element={<ProductInquiry/>}/>
                 <Route path='/admin/delivery-boy' element={<DeliveryRoute/>}/>
                 <Route path='/admin/time-slot' element={<TimeSlot/>}/>

@@ -19,6 +19,7 @@ import { FaStar } from "react-icons/fa6";
 import { FaLock } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import { TbArrowsSort } from "react-icons/tb";
+import { MdDashboard } from "react-icons/md";
 
 const Sidebar = ({ activeId }) => {
   const navigate = useNavigate();
@@ -114,6 +115,11 @@ const Sidebar = ({ activeId }) => {
         <li className={activeId === 18 && "active"}
           onClick={() => navigate("/admin/new-admin")}>
           <RiAdminFill /> New Admin
+        </li>
+
+        <li className={activeId === 19 && "active"}
+          onClick={() => navigate("/admin/dashboard")}>
+          <MdDashboard /> Dashboard
         </li>
       </ul>
     </div>
