@@ -310,6 +310,9 @@ export const Customers = () => {
     <div className='customers'>
       <Sidebar activeId={7} />
       <div className="brand-content">
+        <div className="brand-header">
+          <h2>CUSTOMER LIST</h2>
+        </div>
         <div className="brand-tools">
           <button className='print' onClick={handlePrint}>Print</button>
           <button className='copy' onClick={handleCopy}>Copy</button>

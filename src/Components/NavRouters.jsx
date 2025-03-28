@@ -42,6 +42,7 @@ import { AddProduct } from './AddProduct';
 import { DuplicateProduct } from './DuplicateProduct';
 import { PointTransaction } from './PointTransaction';
 import { Dashboard } from './Dashboard';
+import { OrderDetails } from './OrderDetails';
 
 export const NavRouters = () => {
 
@@ -91,6 +92,7 @@ export const NavRouters = () => {
                 <Route path='/admin/product/update-product/:productId' element={<UpdateProduct />} />
                 <Route path='/admin/product/duplicate-product/:productId' element={<DuplicateProduct />} />
                 <Route path='/admin/product/add-product' element={<AddProduct />} />
+                <Route path='/admin/orders/order-details/:invoiceNum' element={<OrderDetails />} />
             </Routes>
         </>
     )

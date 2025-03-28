@@ -26,34 +26,19 @@ export const Orders = () => {
   const [showResult, setShowResult] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
-  const normalizeText = (text) => text?.toString().toLowerCase() || "";
-
-  // Filter orders based on user input
-  const filteredOrders = orders.filter((order) => {
-    const query = normalizeText(searchQuery);
-    // console.log("Query:", query);
-    return (
-      normalizeText(order.invoiceNum).includes(query) || // Order No.
-      normalizeText(order.invoiceDate).includes(query) || // Order Date
-      normalizeText(order.invoiceDeliveryDate).includes(query) || // Delivery Date
-      normalizeText(order.invoiceName).includes(query) || // Customer Name
-      normalizeText(order.invoiceMobile).includes(query) || // Mobile
-      normalizeText(order.invoiceTotalAmount).includes(query) || // Total Amount
-      normalizeText(order.invoicePayable).includes(query) || // Payable Amount
-      normalizeText(order.invoiceReceivedAmount).includes(query) || // Received Amount
-      normalizeText(order.invoiceRemainingAmount).includes(query) || // Remaining Amount
-      normalizeText(order.deliveryBoy?.deliveryBoyName).includes(query) || // Delivery Boy Name
-      (query === "cash" && order.invoicePaymentMode === 1) || // Payment Mode: Cash
-      (query === "online" && order.invoicePaymentMode !== 1) || // Payment Mode: Online
-      (query === "pending" && order.invoiceStatus === 1) || // Order Status: Pending
-      (query === "confirmed" && order.invoiceStatus === 2) || // Order Status: Confirmed
-      (query === "dispatched" && order.invoiceStatus === 3) || // Order Status: Dispatched
-      (query === "delivered" && order.invoiceStatus === 4) || // Order Status: Delivered
-      (query === "rejected" && order.invoiceStatus === 5) || // Order Status: Rejected
-      (query === "cancelled" && order.invoiceStatus === 6) // Order Status: Cancelled
-    );
+  const [status, setStatus] = useState({
+    1: "Pending",
+    2: "Confirm",
+    3: "Dispatched",
+    4: "Delivered",
+    5: "Rejected",
+    6: "Canceled"
   });
+  const [payment, setPayment] = useState({
+    1: "CASH",
+    2: "ONLINE"
+  })
+
 
   const getDaysAgo = (days) => {
     const date = new Date();
@@ -419,12 +404,7 @@ export const Orders = () => {
                             order.invoiceStatus == 5 ? "Rejected" :
                               order.invoiceStatus == 6 ? "Cancelled" : ""
                   }>
-                    {order.invoiceStatus == 1 && "Pending"}
-                    {order.invoiceStatus == 2 && "Confirmed"}
-                    {order.invoiceStatus == 3 && "Dispatched"}
-                    {order.invoiceStatus == 4 && "Delivered"}
-                    {order.invoiceStatus == 5 && "Rejected"}
-                    {order.invoiceStatus == 6 && "Cancelled"}
+                    {status[order.invoiceStatus] || ''}
                   </td>
                   <td>{order.invoiceName || ''}</td>
                   <td>{order.invoiceMobile || ''}</td>
@@ -432,19 +412,19 @@ export const Orders = () => {
                   <td>{order.invoicePayable ? parseFloat(order.invoicePayable).toFixed(2) : "0.00"}</td>
                   <td>{order.invoiceReceivedAmount ? parseFloat(order.invoiceReceivedAmount).toFixed(2) : "0.00"}</td>
                   <td>{order.invoiceRemainingAmount ? parseFloat(order.invoiceRemainingAmount).toFixed(2) : "0.00"}</td>
-                  <td>{order.invoicePaymentMode === 1 ? "CASH" : "ONLINE"}</td>
+                  <td>{payment[order.invoicePaymentMode]}</td>
                   <td>{order.deliveryBoy?.deliveryBoyName || <span style={{ color: 'red' }}>Not Assigned</span>}</td>
                   <td>{order.invoiceDeliveryDate || <span style={{ color: 'red' }}>N/A</span>}</td>
                   <td className="action-buttons">
                     <FaEye
                       className="edit-icon"
                       title="View"
-                    // onClick={() => navigate(`/admin/product/update-product/${product.id}`)}
+                      onClick={() => navigate(`/admin/orders/order-details/${order.invoiceNum}`)}
                     />
                     <RiDeleteBin5Line
                       className="delete-icon"
                       title="Delete"
-                    onClick={() => handleDelete(order.invoiceNum)}
+                      onClick={() => handleDelete(order.invoiceNum)}
                     />
                   </td>
                 </tr>

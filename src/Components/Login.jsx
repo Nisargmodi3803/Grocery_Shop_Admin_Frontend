@@ -46,7 +46,7 @@ export const Login = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Bad Request',
+                    text: 'Invalid username or password',
                     timer: 2000,
                     showConfirmButton: false
                 });
