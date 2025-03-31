@@ -344,7 +344,7 @@ export const DuplicateProduct = () => {
         <div className='update-brand'>
             <Sidebar activeId={5} />
             <div className="update-brand-container">
-                <h2>+ Update Product</h2>
+                <h2>+ Duplicate Product</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="form-section">
                         <div className="form-group">

@@ -4,8 +4,6 @@ import Sidebar from './Sidebar';
 import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { IoLayers } from "react-icons/io5";
-import { set } from 'date-fns';
-
 
 export const Dashboard = () => {
   const [totalOrders, setTotalOrders] = useState(0);
@@ -18,6 +16,8 @@ export const Dashboard = () => {
   const [todayPendingOrders, setTodayPendingOrders] = useState([]);
   const [todayConfirmedOrders, setTodayConfirmedOrders] = useState([]);
   const [todayDeliveredOrders, setTodayDeliveredOrders] = useState([]);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
   const [todayDate, setTodayDate] = useState(new Date());
 
   const formatDateForDB = (date) => {
@@ -49,18 +49,19 @@ export const Dashboard = () => {
     try {
       const response = await axios.get(`http://localhost:9000/admin/today-confirm?date=${formatDateForDB(todayDate)}`);
       if (response.status === 200) {
-        setConfirmedOrders(response.data);
+        setTodayConfirmedOrders(response.data);
       }
     } catch (error) {
       if (error.response.status === 404) {
         console.log("No Pending Orders Found");
-        setTodayDeliveredOrders([]);
+        setTodayConfirmedOrders([]);
       } else {
 
         console.error('Error fetching today pending orders:', error);
       }
     }
   }
+
   const fetchTodayDeliveredOrders = async () => {
     try {
       const response = await axios.get(`http://localhost:9000/admin/today-delivered?date=${formatDateForDB(todayDate)}`);
@@ -89,7 +90,9 @@ export const Dashboard = () => {
         dispatchedRes,
         deliveredRes,
         rejectedRes,
-        canceledRes
+        canceledRes,
+        productRes,
+        customerRes
       ] = await Promise.all([
         axios.get('http://localhost:9000/admin/count-invoice'),
         axios.get('http://localhost:9000/admin/count-pending-invoice'),
@@ -98,6 +101,8 @@ export const Dashboard = () => {
         axios.get('http://localhost:9000/admin/count-delivered-invoice'),
         axios.get('http://localhost:9000/admin/count-rejected-invoice'),
         axios.get('http://localhost:9000/admin/count-canceled-invoice'),
+        axios.get('http://localhost:9000/admin/product-count'),
+        axios.get('http://localhost:9000/admin/customer-count')
       ]);
 
       animateCount(setTotalOrders, totalRes.data);
@@ -107,6 +112,8 @@ export const Dashboard = () => {
       animateCount(setDeliveredOrders, deliveredRes.data);
       animateCount(setRejectedOrders, rejectedRes.data);
       animateCount(setCanceledOrders, canceledRes.data);
+      animateCount(setTotalProducts, productRes.data);
+      animateCount(setTotalCustomers, customerRes.data);
 
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -144,6 +151,8 @@ export const Dashboard = () => {
     { count: deliveredOrders, label: "Delivered Orders", color: "dark-purple", icon: "fas fa-box-open" },
     { count: rejectedOrders, label: "Rejected Orders", color: "dark-red", icon: "fa fa-exclamation-triangle" },
     { count: canceledOrders, label: "Canceled Orders", color: "gray", icon: "fas fa-times-circle" },
+    { count: totalProducts, label: "Products", color: "green", icon: "fas fa-boxes" },
+    { count: totalCustomers, label: "Customers", color: "orange", icon: "fas fa-users" },
   ];
 
   return (

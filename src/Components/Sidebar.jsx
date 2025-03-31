@@ -27,6 +27,10 @@ const Sidebar = ({ activeId }) => {
   return (
     <div className="sidebar">
       <ul className='side-nav-list'>
+        <li className={activeId === 19 && "active"}
+          onClick={() => navigate("/admin/dashboard")}>
+          <MdDashboard /> Dashboard
+        </li>
         <li className={activeId === 1 && "active"}
           onClick={() => navigate("/admin/orders")}>
           <FaList /> Orders
@@ -115,11 +119,6 @@ const Sidebar = ({ activeId }) => {
         <li className={activeId === 18 && "active"}
           onClick={() => navigate("/admin/new-admin")}>
           <RiAdminFill /> New Admin
-        </li>
-
-        <li className={activeId === 19 && "active"}
-          onClick={() => navigate("/admin/dashboard")}>
-          <MdDashboard /> Dashboard
         </li>
       </ul>
     </div>

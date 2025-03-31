@@ -486,8 +486,8 @@ export const AddProduct = () => {
                         </div>
                         <div className="form-group">
                             <label>Long Description</label>
-                            <input
-                                type="text"
+                            <textarea
+                                maxLength={250}
                                 value={longDescription}
                                 onChange={(e) => setLongDescription(e.target.value)}
                                 placeholder='Product Long Description'
